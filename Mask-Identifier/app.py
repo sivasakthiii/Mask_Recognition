@@ -9,7 +9,7 @@ st.write("Predict if a face is masked or not.")
 
 # Load the model with error handling
 try:
-    model = load_model("model.h5")
+    model = load_model("Mask-Identifier/model.h5")
 except FileNotFoundError:
     st.error("Model file not found. Please check the file path.")
     st.stop()
