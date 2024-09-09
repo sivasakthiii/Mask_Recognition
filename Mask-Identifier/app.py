@@ -1,17 +1,29 @@
 import streamlit as st
 from tensorflow.keras.models import load_model
+from tensorflow.keras.layers import DepthwiseConv2D  # Import if using custom layers
 from PIL import Image
 import numpy as np
+import tensorflow as tf
 
 st.title("Unmasker")
 
 st.write("Predict if a face is masked or not.")
 
+# Check TensorFlow version
+st.write(f"Using TensorFlow version: {tf.__version__}")
+
 # Load the model with error handling
 try:
-    model = load_model("Mask-Identifier/model.h5")
+    # Define custom objects if needed
+    custom_objects = {
+        'DepthwiseConv2D': DepthwiseConv2D
+    }
+    model = load_model("Mask-Identifier/model.h5", custom_objects=custom_objects)
 except FileNotFoundError:
     st.error("Model file not found. Please check the file path.")
+    st.stop()
+except Exception as e:
+    st.error(f"Error loading model: {e}")
     st.stop()
 
 labels = ['WithMask', 'WithoutMask']
